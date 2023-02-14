@@ -7,6 +7,8 @@ export(Resource) var player_props = preload("res://DefaultPlayer.tres")
 var GRAVITY: float
 var JUMP_VELOCITY: float
 var MAX_VELOCITY_X: float
+var ACCELERATION: float
+var DECELERATION: float
 
 var velocity = Vector2.ZERO
 
@@ -34,19 +36,20 @@ func move_player(input, delta):
 	
 
 func apply_gravity(delta):
-	velocity.y += GRAVITY
+	velocity.y += GRAVITY * delta
 #	velocity.y = min(velocity.y, player_props.MAX_FALL_VELOCITY)    #FIX_ME: find the appropriate value for this 
 
 func apply_friction(delta):
-	velocity.x = move_toward(velocity.x, 0, player_props.DECELERATION * delta)
+	velocity.x = move_toward(velocity.x, 0, DECELERATION * delta)
 
 func apply_acceleration(amount, delta):
-	velocity.x = move_toward(velocity.x , MAX_VELOCITY_X * amount, player_props.ACCELERATION * delta)
+	velocity.x = move_toward(velocity.x , MAX_VELOCITY_X * amount, ACCELERATION * delta)
 
 func calculate_gravity_and_velocity():
 	GRAVITY = 8 * player_props.JUMP_HEIGHT / pow(player_props.JUMP_TIME, 2)
 	JUMP_VELOCITY = 4 * player_props.JUMP_HEIGHT / player_props.JUMP_TIME
-	MAX_VELOCITY_X = player_props.JUMP_RANGE * player_props.JUMP_TIME
+	MAX_VELOCITY_X = player_props.JUMP_RANGE / player_props.JUMP_TIME
+	#calculate acceleration and deceleration
 	print(GRAVITY)
 	print(JUMP_VELOCITY)
 	print(MAX_VELOCITY_X)
