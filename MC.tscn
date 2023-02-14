@@ -1,7 +1,24 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://yellow-creep.png" type="Texture" id=1]
 [ext_resource path="res://MC.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=8]
+resource_name = "Jump"
+length = 0.125
+step = 0.063
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.063 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 2 ]
+}
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -20,9 +37,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=2]
 resource_name = "Run"
-length = 0.5
+length = 0.25
 loop = true
-step = 0.125
+step = 0.063
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -30,19 +47,64 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.125, 0.25, 0.375 ),
+"times": PoolRealArray( 0, 0.063, 0.126, 0.189 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 3 ]
+"values": [ 3, 1, 2, 0 ]
 }
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 5, 8.5 )
 
+[sub_resource type="AnimationNodeTransition" id=11]
+input_count = 2
+input_0/name = "on_ground"
+input_0/auto_advance = false
+input_1/name = "in_air"
+input_1/auto_advance = false
+
+[sub_resource type="AnimationNodeAnimation" id=7]
+animation = "RESET"
+
+[sub_resource type="AnimationNodeTransition" id=9]
+input_count = 1
+input_0/name = "jump"
+input_0/auto_advance = false
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "Jump"
+
+[sub_resource type="AnimationNodeTransition" id=6]
+input_count = 2
+input_0/name = "idle"
+input_0/auto_advance = false
+input_1/name = "run"
+input_1/auto_advance = false
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+animation = "Run"
+
+[sub_resource type="AnimationNodeBlendTree" id=4]
+graph_offset = Vector2( -730.384, 7.33417 )
+nodes/air_or_ground/node = SubResource( 11 )
+nodes/air_or_ground/position = Vector2( 100, 240 )
+nodes/idle/node = SubResource( 7 )
+nodes/idle/position = Vector2( -460, 100 )
+nodes/in_air/node = SubResource( 9 )
+nodes/in_air/position = Vector2( -120, 340 )
+nodes/jump/node = SubResource( 10 )
+nodes/jump/position = Vector2( -460, 360 )
+nodes/on_ground/node = SubResource( 6 )
+nodes/on_ground/position = Vector2( -120, 140 )
+nodes/run/node = SubResource( 5 )
+nodes/run/position = Vector2( -460, 220 )
+node_connections = [ "air_or_ground", 0, "on_ground", "air_or_ground", 1, "in_air", "in_air", 0, "jump", "on_ground", 0, "idle", "on_ground", 1, "run", "output", 0, "air_or_ground" ]
+
 [node name="MC" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Jump = SubResource( 8 )
 anims/RESET = SubResource( 1 )
 anims/Run = SubResource( 2 )
 
@@ -55,6 +117,21 @@ hframes = 4
 position = Vector2( 0, -8.5 )
 shape = SubResource( 3 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
+[node name="JumpBufferTimer" type="Timer" parent="."]
 process_mode = 0
+wait_time = 0.2
+one_shot = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 4 )
+anim_player = NodePath("../AnimationPlayer")
+parameters/air_or_ground/current = 0
+parameters/in_air/current = 0
+parameters/on_ground/current = 0
+
+[node name="CoyoteJumpTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="timeout" from="JumpBufferTimer" to="." method="_on_JumpBufferTimer_timeout"]
+[connection signal="timeout" from="CoyoteJumpTimer" to="." method="_on_CoyoteJumpTimer_timeout"]
