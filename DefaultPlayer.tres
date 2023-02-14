@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://player_props.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+JUMP_HEIGHT = 32
+JUMP_TIME = 2.0
+JUMP_RANGE = 32
+ACCELERATION = 0
+DECELERATION = 0
+MAX_VELOCITY_X = 0
+MAX_FALL_VELOCITY = 0
