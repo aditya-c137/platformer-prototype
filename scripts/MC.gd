@@ -1,7 +1,7 @@
 extends KinematicBody2D
+class_name main_player
 
-
-export(Resource) var player_props = preload("res://DefaultPlayer.tres")
+export(Resource) var player_props = preload("res://resources/DefaultPlayer.tres")
 
 onready var jump_buffer_timer = $JumpBufferTimer
 onready var animation_tree = $AnimationTree

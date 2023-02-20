@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/yellow-creep.png-08ac6cbddaf2edabe4a13d486c84916d.stex"
+path="res://.import/icon.png-9a25435582839ca3cd8bb514b597c2d9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://yellow-creep.png"
-dest_files=[ "res://.import/yellow-creep.png-08ac6cbddaf2edabe4a13d486c84916d.stex" ]
+source_file="res://assets/sprites/icon.png"
+dest_files=[ "res://.import/icon.png-9a25435582839ca3cd8bb514b597c2d9.stex" ]
 
 [params]
 
