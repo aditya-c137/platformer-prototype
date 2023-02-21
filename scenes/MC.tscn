@@ -101,6 +101,7 @@ nodes/run/position = Vector2( -460, 220 )
 node_connections = [ "air_or_ground", 0, "on_ground", "air_or_ground", 1, "in_air", "on_ground", 0, "idle", "on_ground", 1, "run", "in_air", 0, "jump", "output", 0, "air_or_ground" ]
 
 [node name="MC" type="KinematicBody2D"]
+collision_layer = 4
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

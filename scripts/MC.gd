@@ -22,8 +22,10 @@ var buffered_jump: bool = false
 var coyote_jump: bool = false
 var was_on_floor: bool
 var just_left_ground:bool = false
+var screen_size: Vector2
 
 func _ready():
+	screen_size = get_viewport_rect().size
 	calculate_gravity_and_velocity()
 	jump_buffer_timer.wait_time = player_props.JUMP_BUFFER_WAIT_TIME
 	animation_tree.active = true
@@ -39,6 +41,9 @@ func _physics_process(delta):
 	was_on_floor = is_on_floor()
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
+	position.x = clamp(position.x, 0, screen_size.x)
+	position.y = clamp(position.y, 0, screen_size.y)
+
 	
 	if not is_on_floor() and was_on_floor:
 		coyote_jump = true
@@ -88,10 +93,11 @@ func calculate_gravity_and_velocity():
 	JUMP_VELOCITY = 4 * player_props.JUMP_HEIGHT / player_props.JUMP_TIME
 	MAX_VELOCITY_X = player_props.JUMP_RANGE / player_props.JUMP_TIME
 	#calculate acceleration and deceleration
-	print(GRAVITY)
-	print(JUMP_VELOCITY)
-	print(MAX_VELOCITY_X)
 
+func update_ground_check_y():
+	if is_on_floor():
+		return position.y
+	return null
 
 func _on_JumpBufferTimer_timeout():
 	buffered_jump = false

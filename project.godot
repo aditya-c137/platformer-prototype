@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "GroundSnap",
+"language": "GDScript",
+"path": "res://scripts/ground_snap.gd"
+}, {
 "base": "Resource",
 "class": "PlayerProps",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://scripts/MC.gd"
 } ]
 _global_script_class_icons={
+"GroundSnap": "",
 "PlayerProps": "",
 "main_player": ""
 }
@@ -29,6 +35,10 @@ _global_script_class_icons={
 config/name="Test G"
 run/main_scene="res://scenes/Level.tscn"
 config/icon="res://assets/sprites/icon.png"
+
+[autoload]
+
+GlobalData="*res://scripts/global_data.gd"
 
 [display]
 
@@ -85,4 +95,5 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+threads/thread_safe_bvh=true
 environment/default_environment="res://default_env.tres"
