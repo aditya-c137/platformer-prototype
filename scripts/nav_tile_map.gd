@@ -18,7 +18,7 @@ func add_tiles(array):
 	for i in range(0, array.size()):
 		pos = map_to_world(array[i])
 		map_to_world_arr.append(pos)
-#		tileset.tile_set_modulate(1 , Color(255,86,255,0))
+		tileset.tile_set_modulate(1 , Color(255,86,255,0))
 		var new_nav_tile = nav_tile.instance()
 		new_nav_tile.set_position(pos)
 		new_nav_tile.init(pos)

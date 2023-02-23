@@ -23,6 +23,7 @@ var coyote_jump: bool = false
 var was_on_floor: bool
 var just_left_ground:bool = false
 var screen_size: Vector2
+const JUMP_BUTTON = "ui_up"
 
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -53,16 +54,16 @@ func jump_player(delta):
 	
 	if is_on_floor() or coyote_jump and velocity.y >=0:
 		max_jumps = player_props.MAX_IN_AIR_JUMPS
-		if Input.is_action_just_pressed("jump") or buffered_jump:
+		if Input.is_action_just_pressed(JUMP_BUTTON) or buffered_jump:
 			velocity.y = -JUMP_VELOCITY
 			buffered_jump = false
 		animation_tree.set("parameters/air_or_ground/current", 0)
 	else:
-		if Input.is_action_just_pressed("jump") and max_jumps > 0:
+		if Input.is_action_just_pressed(JUMP_BUTTON) and max_jumps > 0:
 			velocity.y = -JUMP_VELOCITY
 			max_jumps -= 1
 		
-		if Input.is_action_just_pressed("jump"):
+		if Input.is_action_just_pressed(JUMP_BUTTON):
 			buffered_jump = true
 			jump_buffer_timer.start()
 		animation_tree.set("parameters/air_or_ground/current", 1)
